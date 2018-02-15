@@ -1,5 +1,3 @@
-var getAllPages = require('./getAllPages');
-var cheerio = require('cheerio');
 var config = require('../config.json');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 const waApi = WolframAlphaAPI(config.wolframId);
@@ -18,19 +16,19 @@ module.exports = function(searchString, answers){
             waApi.getShort(searchString.replace("sss", answers[2]))
         ];
 
-        var results = await Promise.all(wolfArray);
+        try{
+            var results = await Promise.all(wolfArray);
+        } catch(e){
+            console.log(e);
+            
+        }
+        
 
         for(let num of [0, 1, 2]){
            
             console.log("\nSEARCH FOR: " + searchString.replace("sss", answers[num]) + " ---------------\n");
-            var sn = getSnippets(results[num]);
-            console.log(sn);
+            console.log(results[num]);
         }
 
     })
-}
-
-function getSnippets(page){
-    let res = page;
-    return res;
 }

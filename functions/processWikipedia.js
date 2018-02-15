@@ -6,9 +6,13 @@ module.exports = function(wikiPage, searchString){
     
     var res = [];
 
-
     let $ = cheerio.load(wikiPage);
-    let wikiText = $("#bodyContent").text();
+    try{
+        let wikiText = $("#bodyContent").text();
+    } catch(e) {
+        return false;
+    }
+    
 
     searchWords = searchString.split(" ");
 

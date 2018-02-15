@@ -48,19 +48,18 @@ function connect(url, headers){
 
       var message = JSON.parse(data);
 
-        if(message.type == "broadcastEnded") {
+        if(message.type == "broadcastEnded" && !message.reason) {
             console.log("Broadcast ended");
-            //ws.close();
+            ws.close();
         }
 
-        if(message.type == "question"){
+        if(message.type == "question" && message.answers){
 
             console.log(message);
             processAnswers(message.answers);
 
             var prediction = await predictAnswers(message.question, message.answers);
 
-            console.log(prediction);
         }
 
     });
@@ -68,9 +67,7 @@ function connect(url, headers){
 
 function searchPrompt(){
     prompt.get(['searchString'], function (err, result) {
-        //
-        // Log the results.
-        //
+
         var ss = result.searchString;
         
         if(ss != "exit" ) {

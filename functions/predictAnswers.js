@@ -6,16 +6,16 @@ var processWikipedia = require('./processWikipedia');
 var getAllPages = require('./getAllPages');
 var sw = require('stopword');
 
-module.exports = function(question, answers) {
+module.exports = function(qumero, answers) {
 
     return new Promise(async(resolve, reject) => {
 
-        question = question.split(" ").map(q=>{return pluralize.singular(q); }).join(" ").replace("?", "");
+        question = qumero.split(" ").map(q=>{return pluralize.singular(q); }).join(" ").replace("?", "");
         questionMainWords = sw.removeStopwords(question.split(" ")).join(" ");
 
         //process.stdout.write('\033c');
 
-        console.log('QUESTION: ', question);
+        console.log('QUESTION: ', qumero);
 
         var answerArray = [];
         for(let answer of answers){
@@ -73,7 +73,11 @@ module.exports = function(question, answers) {
         finalAnswer.b = Math.round(100 * (answerGoogleWeighting.b + answerGoogle2Weighting.b + answerGoogle3Weighting.b) / total);
         finalAnswer.c = Math.round(100 * (answerGoogleWeighting.c + answerGoogle2Weighting.c + answerGoogle3Weighting.c) / total);
 
-        console.log("\nFinal Total: ", finalAnswer);
+        console.log("\n****** FINAL TOTAL: ");
+
+        console.log(answerArray[0] + ": " + finalAnswer.a + "%");
+        console.log(answerArray[1] + ": " + finalAnswer.b + "%");
+        console.log(answerArray[2] + ": " + finalAnswer.c + "%");
 
         console.log("\n------------- WIKIPEDIA PAGES ----------------\n");
 
