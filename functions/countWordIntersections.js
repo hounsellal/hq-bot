@@ -1,9 +1,11 @@
 var words = require('lodash.words');
 
 module.exports = function(results, answer){
+    answer = answer.replace(/[^a-z0-9\s\&\@\#\$\%\*]/gmi, "").toLowerCase();
     var oc = 0;
     for(let result of results){
         //onsole.log('looking at ' + result);
+        result = result.toLowerCase();
         oc += countIntersections(result, answer);
     }
 
@@ -14,9 +16,6 @@ module.exports = function(results, answer){
 function countIntersections(str, value) {
     var strArray = words(str);
     var answerArray = words(value);
-    for(let a in answerArray){
-        answerArray[a] = answerArray[a].toLowerCase();
-    }
 
     var newArray = strArray.filter(function(n) {
 

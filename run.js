@@ -6,6 +6,7 @@ var prompt = require('prompt');
 prompt.start();
 var quickSearch = require('./functions/quickSearch');
 var answers = ['Canada', 'United States', 'United Kingdom'];
+var connection = require('./connection');
 
 searchPrompt();
 
@@ -36,11 +37,11 @@ function connect(url, headers){
     });
 
     ws.on('open', function open() {
-      console.log('connected');
+      console.log('Connected');
     });
 
     ws.on('close', function open() {
-      console.log('Reconnecting');
+      console.log('Reconnecting...');
       connect(url, headers);
     });
 
@@ -55,11 +56,21 @@ function connect(url, headers){
 
         if(message.type == "question" && message.answers){
 
-            console.log(message);
+            connection.pq("INSERT INTO questions SET ?", {
+                question: message.question,
+                answers: JSON.stringify(message.answers),
+                category: message.category
+            });
+
             processAnswers(message.answers);
 
             var prediction = await predictAnswers(message.question, message.answers);
 
+        }
+
+        if(message.type == "answer") {
+            console.log("ANSWER TO QUESTION:");
+            console.log(message);
         }
 
     });

@@ -1,5 +1,6 @@
 var rp = require('request-promise');
 var cheerio = require('cheerio');
+var pluralize = require('pluralize');
 
 module.exports = function(wikiPage, searchString){
     
@@ -7,7 +8,7 @@ module.exports = function(wikiPage, searchString){
 
     let $ = cheerio.load(wikiPage);
     try{
-        var wikiText = $("#bodyContent").text();
+        var wikiText = $("#bodyContent").text().toLowerCase();
     } catch(e) {
         return false;
     }
@@ -17,14 +18,19 @@ module.exports = function(wikiPage, searchString){
 
     let oc = 0;
     let ret = {};
+    let missingWords = [];
 
     for(let searchWord of searchWords){
+        //let searchWord = pluralize.singular(sw).replace("’","").replace("'","").toLowerCase();
         let wordOcurrences = countOcurrences(wikiText, searchWord);
         oc += wordOcurrences;
         ret[searchWord] = wordOcurrences;
+        if(wordOcurrences == 0) missingWords.push(searchWord);
     }
 
-    ret['total'] = oc;
+    ret['total count'] = oc;
+    ret['missing words'] = missingWords.join(",");
+    ret['has all words'] = (missingWords.length == 0) ? true : false;
 
     return ret;
 

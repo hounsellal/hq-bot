@@ -1,6 +1,6 @@
 var getAllPages = require('./getAllPages');
 
-module.exports = function(questionUrl, answerUrlArray, questionMainWordsUrl) {
+module.exports = function(questionUrl, answerUrlArray) {
     
     return new Promise(async(resolve, reject)=>{
 
@@ -14,7 +14,7 @@ module.exports = function(questionUrl, answerUrlArray, questionMainWordsUrl) {
             // googleBase + questionMainWords + " " + answerArray[0],
             // googleBase + questionMainWords+ " " + answerArray[1],
             // googleBase + questionMainWords + " " + answerArray[2],
-            googleBase + questionMainWordsUrl + answerUrlArray.join(" "),
+            googleBase + questionUrl + answerUrlArray.join(" "),
             wikipediaBase + answerUrlArray[0],
             wikipediaBase + answerUrlArray[1],
             wikipediaBase + answerUrlArray[2],
