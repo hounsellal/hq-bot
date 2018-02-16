@@ -1,7 +1,7 @@
 var cheerio = require('cheerio');
 
-module.exports = function(htmlString){
-    var $ = cheerio.load(htmlString);
+module.exports = function(googleString, yahooString = null){
+    var $ = cheerio.load(googleString);
 
     var results = [];
     var resultTitles = $('h3[class="r"]');
@@ -15,6 +15,18 @@ module.exports = function(htmlString){
     resultSnippets.each(function(snippet){
         results.push($(this).text().toLowerCase());
     });
+
+    if(yahooString) {
+        var $ = cheerio.load(yahooString);
+
+        var results = [];
+        var resultParas = $('p');
+
+        resultParas.each(function(para){
+            results.push($(this).text().toLowerCase());
+        });
+
+    }
 
     return results;
 }

@@ -1,4 +1,3 @@
-var sw = require('stopword');
 var rp = require('request-promise');
 var cheerio = require('cheerio');
 
@@ -8,7 +7,7 @@ module.exports = function(wikiPage, searchString){
 
     let $ = cheerio.load(wikiPage);
     try{
-        let wikiText = $("#bodyContent").text();
+        var wikiText = $("#bodyContent").text();
     } catch(e) {
         return false;
     }

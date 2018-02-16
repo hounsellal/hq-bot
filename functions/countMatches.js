@@ -4,7 +4,7 @@ module.exports = function(results, answer){
         oc += countOcurrences(result, answer);
     }
 
-    console.log('Google count for ' + answer + ': ' + oc);
+    //console.log('Google count for ' + answer + ': ' + oc);
     return oc;
 }
 
