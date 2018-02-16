@@ -117,9 +117,9 @@ module.exports = function(qumero, answers) {
         );
 
 
-        var aTotal = 4 * gh.percents.question.count[0] + 2 * gh.percents.question.intersection[0] + 3 * gh.percents.questionAnswer.count[0] + gh.percents.questionAnswer.intersection[0];
-        var bTotal = 4 * gh.percents.question.count[1] + 2 * gh.percents.question.intersection[1] + 3 * gh.percents.questionAnswer.count[1] + gh.percents.questionAnswer.intersection[1];
-        var cTotal = 4 * gh.percents.question.count[2] + 2 * gh.percents.question.intersection[2] + 3 * gh.percents.questionAnswer.count[2] + gh.percents.questionAnswer.intersection[2];
+        var aTotal = 4 * gh.percents.question.count[0] + 3 * gh.percents.question.intersection[0] + 2 * gh.percents.questionAnswer.count[0] + gh.percents.questionAnswer.intersection[0];
+        var bTotal = 4 * gh.percents.question.count[1] + 3 * gh.percents.question.intersection[1] + 2 * gh.percents.questionAnswer.count[1] + gh.percents.questionAnswer.intersection[1];
+        var cTotal = 4 * gh.percents.question.count[2] + 3 * gh.percents.question.intersection[2] + 2 * gh.percents.questionAnswer.count[2] + gh.percents.questionAnswer.intersection[2];
 
         
         

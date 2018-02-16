@@ -1,7 +1,7 @@
 var rp = require('request-promise');
 var predictAnswers = require('./functions/predictAnswers');
 const WebSocket = require('ws');
-var config = require('./config.json');
+var config = require('./config.work.json');
 var prompt = require('prompt');
 prompt.start();
 var quickSearch = require('./functions/quickSearch');
@@ -57,6 +57,7 @@ function connect(url, headers){
         if(message.type == "question" && message.answers){
 
             connection.pq("INSERT INTO questions SET ?", {
+                questionId: message.questionId,
                 question: message.question,
                 answers: JSON.stringify(message.answers),
                 category: message.category
@@ -68,9 +69,16 @@ function connect(url, headers){
 
         }
 
-        if(message.type == "answer") {
+        if(message.type == "questionSummary") {
             console.log("ANSWER TO QUESTION:");
             console.log(message);
+            var n = 0;
+            for(let answer of message.answerCounts){
+                if(answer.correct){
+                    connection.pq("UPDATE questions SET correctAnswer = ? WHERE questionId = ?", [n, message.questionId]);
+                }
+                n+=1;
+            }
         }
 
     });

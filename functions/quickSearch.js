@@ -1,4 +1,4 @@
-var config = require('../config.json');
+var config = require('../config.personal.json');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 const waApi = WolframAlphaAPI(config.wolframId);
 

@@ -3,7 +3,7 @@ var connection = require('../connection');
 
 (async function(){
 
-    var qas = await connection.pq("SELECT * FROM questions ORDER BY RAND()");
+    var qas = await connection.pq("SELECT * FROM questions ORDER BY RAND() LIMIT 100");
 
     for(let qa of qas){
         await predictAnswers(qa.question, JSON.parse(qa.answers));
