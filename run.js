@@ -63,7 +63,7 @@ function connect(url, headers){
                 category: message.category
             });
 
-            processAnswers(message.answers);
+            answers = processAnswers(message.answers);
 
             var prediction = await predictAnswers(message.question, message.answers);
 

@@ -38,24 +38,29 @@ module.exports = function(qumero, answers) {
 
         var questionUrl = encodeURI(question);
 
-        var pa = await buildPageArray(questionUrl, answerUrlArray);
+        var pa = await buildPageArray(questionUrl, answerUrlArray, answerArray);
 
-        var {pages, useWikipedia} = pa;     
+        var {pages, useWikipedia} = pa; 
+
+        var qsaA = processGoogleResults(pages['google question + answer A']).total;
+        var qsaB = processGoogleResults(pages['google question + answer B']).total;
+        var qsaC = processGoogleResults(pages['google question + answer C']).total;
 
         var gh = {
             types: {
                 question: {
                     count: [],
                     intersection: [],
-                    results: processGoogleResults(pages['google question'])
+                    results: processGoogleResults(pages['google question']).results
                 },
                 questionAnswer: {
                     count: [],
                     intersection: [],
-                    results: processGoogleResults(pages['google question + answers'])
+                    results: processGoogleResults(pages['google question + answers']).results
                 },
             },
-            total: [0,0,0]
+            total: [0,0,0],
+
         };
 
         for(let key in gh.types){
@@ -79,6 +84,7 @@ module.exports = function(qumero, answers) {
         var qit = gh.types.question.intersection.reduce((a, b) => a + b, 0);
         var qact = gh.types.questionAnswer.count.reduce((a, b) => a + b, 0);
         var qait = gh.types.questionAnswer.intersection.reduce((a, b) => a + b, 0);
+        var qsat = qsaA + qsaB + qsaC;
 
         gh.percents = {
             question: {
@@ -104,7 +110,12 @@ module.exports = function(qumero, answers) {
                     Math.round(100 * gh.types.questionAnswer.intersection[1] / qait || 0),
                     Math.round(100 * gh.types.questionAnswer.intersection[2] / qait || 0),
                 ]
-            }
+            },
+            questionSingleAnswerResults: [
+                Math.round(100 * qsaA / qsat || 0),
+                Math.round(100 * qsaB / qsat || 0),
+                Math.round(100 * qsaC / qsat || 0),
+            ]
         };
 
         var table = new Table({ head: [colors.bold("GOOGLE SEARCHES"), "A. " + answerArray[0], "B. " + answerArray[1], "C. " + answerArray[2]] });
@@ -114,6 +125,7 @@ module.exports = function(qumero, answers) {
             { 'METHOD 2 (Search Question, Count Word Intersections)': [gh.percents.question.intersection[0] + "%", gh.percents.question.intersection[1] + "%", gh.percents.question.intersection[2]] },
             { 'METHOD 3 (Search Question & Answers, Count Answer Matches)': [gh.percents.questionAnswer.count[0] + "%", gh.percents.questionAnswer.count[1] + "%", gh.percents.questionAnswer.count[2]] },
             { 'METHOD 4 (Search Queston & Answers, Count Word Intersections)': [gh.percents.questionAnswer.intersection[0] + "%", gh.percents.questionAnswer.intersection[1] + "%", gh.percents.questionAnswer.intersection[2]] },
+            { 'METHOD 5 (Search Question + Each Answer, Count Results)': [gh.percents.questionSingleAnswerResults[0] + "%", gh.percents.questionSingleAnswerResults[1] + "%", gh.percents.questionSingleAnswerResults[2] + "%"]}
         );
 
 
@@ -126,7 +138,7 @@ module.exports = function(qumero, answers) {
 
         var n = 0;
         var letters = ["A", "B", "C"];
-        var tot = 100 * (4 * (qct/qct || 0) + (3 * qit/qit || 0) + (2 * qact/qact || 0) + (qait/qait || 0));
+        var tot = 100 * (4 * (qct/qct || 0) + (3 * qit/qit || 0) + (2 * qact/qact || 0) + (qait/qait || 0)  );
 
         var finalRow = {
             "Best Guess": []

@@ -16,6 +16,9 @@ module.exports = function(googleString, yahooString = null){
         results.push($(this).text().toLowerCase());
     });
 
+    var resultText = $("#resultStats").text();
+    numResults = parseInt(resultText.trim().replace("About ", "").replace(/,/g, ''));
+
     if(yahooString) {
         var $ = cheerio.load(yahooString);
 
@@ -28,5 +31,5 @@ module.exports = function(googleString, yahooString = null){
 
     }
 
-    return results;
+    return {total: numResults, results: results};
 }
