@@ -9,11 +9,13 @@
   "author": "Al Hounsell",
   "license": "ISC",
   "dependencies": {
+    "argv": "0.0.2",
     "cheerio": "^1.0.0-rc.2",
     "cli-table": "^0.3.1",
     "colors": "^1.1.2",
     "install": "^0.10.4",
     "lodash.words": "^4.2.0",
+    "minimist": "^1.2.0",
     "mysql2": "^1.5.2",
     "npm": "^5.6.0",
     "pluralize": "^7.0.0",

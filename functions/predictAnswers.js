@@ -24,9 +24,10 @@ module.exports = function(qumero, answers) {
         console.log('\nQUESTION: ', qumero.yellow, "\n");
         var chooseLowest = false;
 
-        if(qumero.indexOf(" NOT ") > -1){
+        if(qumero.indexOf(" NOT ") > -1 || qumero.indexOf(" NEVER ") > -1){
             console.log("NOT DETECTED. CHOOSE THE LOWEST HIT OPTION");
             chooseLowest = true;
+            qumero = qumero.replace(" NOT "," ").replace(" NEVER ", " ");
         }
 
         var answerArray = [];

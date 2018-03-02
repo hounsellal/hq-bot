@@ -16,7 +16,7 @@ module.exports = function(questionUrl, answerUrlArray, answerArray) {
             googleBase + questionUrl + encodeURI(" \"" + answerArray[0] + "\""),
             googleBase + questionUrl+ encodeURI(" \"" + answerArray[1] + "\""),
             googleBase + questionUrl + encodeURI(" \"" + answerArray[2] + "\""),
-            googleBase + questionUrl + answerUrlArray.join(" "),
+            googleBase + questionUrl + " " + answerUrlArray.join(" "),
             wikipediaBase + answerUrlArray[0],
             wikipediaBase + answerUrlArray[1],
             wikipediaBase + answerUrlArray[2],

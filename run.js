@@ -1,7 +1,7 @@
 var rp = require('request-promise');
 var predictAnswers = require('./functions/predictAnswers');
 const WebSocket = require('ws');
-var config = require('./config.work.json');
+var config = require('./config.general.json');
 var prompt = require('prompt');
 prompt.start();
 var quickSearch = require('./functions/quickSearch');
@@ -18,7 +18,7 @@ var headers = {
 
 (async function(){
     var showDetails = await rp({
-        uri: "https://api-quiz.hype.space/shows/now?type=hq&userId=" + config.userId,
+        uri: "https://api-quiz.hype.space/shows/now?type=hq",
         headers: headers,
         json: true
     });
