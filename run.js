@@ -6,6 +6,7 @@ var prompt = require('prompt');
 prompt.start();
 var quickSearch = require('./functions/quickSearch');
 var answers = ['Canada', 'United States', 'United Kingdom'];
+var question = "What is the capital of Canada?";
 var connection = require('./connection');
 
 searchPrompt();
@@ -64,6 +65,7 @@ function connect(url, headers){
             });
 
             answers = processAnswers(message.answers);
+            question = message.question;
 
             var prediction = await predictAnswers(message.question, message.answers);
 
@@ -71,11 +73,12 @@ function connect(url, headers){
 
         if(message.type == "questionSummary") {
             console.log("ANSWER TO QUESTION:");
-            console.log(message);
+            //console.log(message);
             var n = 0;
             for(let answer of message.answerCounts){
                 if(answer.correct){
                     connection.pq("UPDATE questions SET correctAnswer = ? WHERE questionId = ?", [n, message.questionId]);
+                    console.log(answer.answer);
                 }
                 n+=1;
             }
@@ -88,11 +91,25 @@ function searchPrompt(){
     prompt.get(['searchString'], function (err, result) {
 
         var ss = result.searchString;
+
+        if(ss.startsWith('/ ')){
+            quickSearch(ss.replace("/ ", ""));
+            searchPrompt();
+            return;
+        }
+
+        if(ss === "/"){
+            quickSearch(question);
+            searchPrompt();
+            return;
+        }
         
         if(ss != "exit" ) {
             quickSearch(ss, answers);
             searchPrompt();
         }
+
+        
     });
 }
 
