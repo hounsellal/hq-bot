@@ -10,11 +10,13 @@ var buildPageArray = require('./buildPageArray');
 var words = require('lodash.words');
 var pluralize = require('pluralize');
 var Table = require('cli-table');
+var open = require('mac-open');
 
 module.exports = function(qumero, answers) {
 
     return new Promise(async(resolve, reject) => {
 
+        qumero = JSON.parse(JSON.stringify(qumero));
         var question = qumero.replace("?", "");
         var questionMainWords = sw.removeStopwords(words(question)).map(www=> pluralize.singular(www).replace(/[^a-z0-9]+|\s+/gmi, "").toLowerCase()).join(" ");
 
@@ -38,6 +40,7 @@ module.exports = function(qumero, answers) {
         }
 
         var questionUrl = encodeURI(question);
+        open(`https://www.google.ca/search?q=${questionUrl.replace(/'/g,"")}?`);
 
         var pa = await buildPageArray(questionUrl, answerUrlArray, answerArray);
 

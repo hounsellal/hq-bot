@@ -1,7 +1,7 @@
 var words = require('lodash.words');
 
 module.exports = function(results, answer){
-    answer = answer.replace(/[^a-z0-9\s\&\@\#\$\%\*]/gmi, "").toLowerCase();
+    answer = answer.replace(/[^a-z0-9\s\&\@\#\$\%\*\'\-]/gmi, "").toLowerCase();
     var oc = 0;
     for(let result of results){
         //onsole.log('looking at ' + result);
