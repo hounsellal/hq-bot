@@ -1,7 +1,7 @@
 var rp = require('request-promise');
 var predictAnswers = require('./functions/predictAnswers');
 const WebSocket = require('ws');
-var config = require('./config.general.json');
+var config = require('./config.json');
 var prompt = require('prompt');
 prompt.start();
 var quickSearch = require('./functions/quickSearch');
