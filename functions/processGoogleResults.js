@@ -6,10 +6,12 @@ module.exports = function(googleString, yahooString = null){
     var results = [];
     var resultTitles = $('h3[class="r"]');
     var resultSnippets = $('span[class="st"]');
+    var resultLinks = [];
 
     resultTitles.each(function(title){
 
         results.push($(this).text().toLowerCase());
+        resultLinks.push("https://www.google.ca" + $(this).find("a").first().attr('href'));
     });
 
     resultSnippets.each(function(snippet){
@@ -31,5 +33,5 @@ module.exports = function(googleString, yahooString = null){
 
     }
 
-    return {total: numResults, results: results};
+    return {total: numResults, results: results, links: resultLinks};
 }

@@ -41,6 +41,7 @@ module.exports = function(qumero, answers) {
 
         var questionUrl = encodeURI(question);
         open(`https://www.google.ca/search?q=${questionUrl.replace(/'/g,"")}?`);
+        
 
         var pa = await buildPageArray(questionUrl, answerUrlArray, answerArray);
 
@@ -50,12 +51,14 @@ module.exports = function(qumero, answers) {
         var qsaB = processGoogleResults(pages['google question + answer B']).total;
         var qsaC = processGoogleResults(pages['google question + answer C']).total;
 
+        var simpleQuestion = processGoogleResults(pages['google question']);
+
         var gh = {
             types: {
                 question: {
                     count: [],
                     intersection: [],
-                    results: processGoogleResults(pages['google question']).results
+                    results: simpleQuestion.results
                 },
                 questionAnswer: {
                     count: [],
@@ -125,11 +128,11 @@ module.exports = function(qumero, answers) {
         var table = new Table({ head: [colors.bold("GOOGLE SEARCHES"), "A. " + answerArray[0], "B. " + answerArray[1], "C. " + answerArray[2]] });
 
         table.push(
-            { 'METHOD 1 (Search Question, Count Answer Matches)': [gh.percents.question.count[0] + "%", gh.percents.question.count[1] + "%", gh.percents.question.count[2]] },
-            { 'METHOD 2 (Search Question, Count Word Intersections)': [gh.percents.question.intersection[0] + "%", gh.percents.question.intersection[1] + "%", gh.percents.question.intersection[2]] },
-            { 'METHOD 3 (Search Question & Answers, Count Answer Matches)': [gh.percents.questionAnswer.count[0] + "%", gh.percents.questionAnswer.count[1] + "%", gh.percents.questionAnswer.count[2]] },
-            { 'METHOD 4 (Search Queston & Answers, Count Word Intersections)': [gh.percents.questionAnswer.intersection[0] + "%", gh.percents.questionAnswer.intersection[1] + "%", gh.percents.questionAnswer.intersection[2]] },
-            { 'METHOD 5 (Search Question + Each Answer, Count Results)': [gh.percents.questionSingleAnswerResults[0] + "%", gh.percents.questionSingleAnswerResults[1] + "%", gh.percents.questionSingleAnswerResults[2] + "%"]}
+            { 'METHOD 1': [gh.percents.question.count[0] + "%", gh.percents.question.count[1] + "%", gh.percents.question.count[2]] },
+            { 'METHOD 2': [gh.percents.question.intersection[0] + "%", gh.percents.question.intersection[1] + "%", gh.percents.question.intersection[2]] },
+            { 'METHOD 3': [gh.percents.questionAnswer.count[0] + "%", gh.percents.questionAnswer.count[1] + "%", gh.percents.questionAnswer.count[2]] },
+            { 'METHOD 4': [gh.percents.questionAnswer.intersection[0] + "%", gh.percents.questionAnswer.intersection[1] + "%", gh.percents.questionAnswer.intersection[2]] },
+            { 'METHOD 5*': [gh.percents.questionSingleAnswerResults[0] + "%", gh.percents.questionSingleAnswerResults[1] + "%", gh.percents.questionSingleAnswerResults[2] + "%"]}
         );
 
 
@@ -204,13 +207,9 @@ module.exports = function(qumero, answers) {
 
             console.log(wt.toString());
             
-
         }
 
-        
-        
-
-        return resolve(gh);
+        return resolve(simpleQuestion);
 
     });
 }

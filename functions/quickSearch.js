@@ -1,4 +1,4 @@
-var config = require('../config.personal.json');
+var config = require('../config.json');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 const waApi = WolframAlphaAPI(config.wolframId);
 
@@ -24,7 +24,7 @@ module.exports = function(searchString, answers = null){
         try{
             var results = await Promise.all(wolfArray);
         } catch(e){
-            console.log(e);
+            //console.log(e);
             return false;
         }
         

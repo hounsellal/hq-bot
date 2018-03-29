@@ -1,5 +1,5 @@
 var getAllPages = require('./getAllPages');
-var config = require('../config.personal.json');
+var config = require('../config.json');
 
 module.exports = function(questionUrl, answerUrlArray, answerArray) {
     

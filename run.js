@@ -5,9 +5,15 @@ var config = require('./config.json');
 var prompt = require('prompt');
 prompt.start();
 var quickSearch = require('./functions/quickSearch');
+var quickGoogle = require('./functions/quickGoogle');
 var answers = ['Canada', 'United States', 'United Kingdom'];
 var question = "What is the capital of Canada?";
 var connection = require('./connection');
+var moment = require('moment');
+var links = [];
+var checkAnswersOnPage = require('./functions/checkAnswersOnPage');
+
+
 
 searchPrompt();
 
@@ -39,6 +45,10 @@ function connect(url, headers){
 
     ws.on('open', function open() {
       console.log('Connected');
+      //console.log(moment());
+      setTimeout(function(){
+        console.log("ABOUT TO DISCONNECT IN 5 SECONDS")
+      }, 1000 * 25)
     });
 
     ws.on('close', function open() {
@@ -67,7 +77,7 @@ function connect(url, headers){
             answers = processAnswers(message.answers);
             question = message.question;
 
-            var prediction = await predictAnswers(message.question, message.answers);
+            links = await predictAnswers(message.question, message.answers);
 
         }
 
@@ -92,20 +102,45 @@ function searchPrompt(){
 
         var ss = result.searchString;
 
+        //To search for anything during a game just type "/ " followed by your question for Wolfram Alpha
         if(ss.startsWith('/ ')){
             quickSearch(ss.replace("/ ", ""));
             searchPrompt();
             return;
         }
 
+        //To search Wolfram Alpha for the exact HQ questions, just type "/" and enter
         if(ss === "/"){
             quickSearch(question);
             searchPrompt();
             return;
         }
+
+        //Search Google for this question followed by the answers
+        if(ss.startsWith('wa ')){
+            quickSearch(ss.replace("wa ", ""), answers);
+            searchPrompt();
+            return;
+        }
+
+        if(ss.length == 1 && isNaN(parseInt(ss)) === false) {
+            
+            var numby = parseInt(ss);
+            if(links.links[numby-1]){
+                console.log(links.links[numby-1]);
+                checkAnswersOnPage(links.links[numby-1], answers);
+            }
+
+            searchPrompt();
+            return;
+        }
         
+        //To search for a custom question followed by each of the answers, just type that custom question.
+        //the answers will be appended to the end of the question followed by a space
+        //if you want the answer to appear mid-sentence then do: "In the capital of sss, how many people are there?"
+        // "sss" will be replaced by each of the answers in three separate questions sent to Wolfram Alpha
         if(ss != "exit" ) {
-            quickSearch(ss, answers);
+            quickGoogle(ss, answers);
             searchPrompt();
         }
 
