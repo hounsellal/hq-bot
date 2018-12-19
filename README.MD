@@ -1,4 +1,4 @@
-#HQ Bot
+# HQ Bot
 
 This is a cool little bot to help win at HQ. It searches both Google and Wikipedia. It also can do a quick find text on the google results.
 
